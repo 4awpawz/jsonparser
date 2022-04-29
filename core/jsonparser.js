@@ -10,7 +10,7 @@ const JSONC = require("jsonc");
 const log = console.log.bind(console);
 const encoding = "utf-8";
 
-function changeSingleToDoubleQuotes(str) {
+function useDoubleQuotes(str) {
     const regex = /'/g;
     return str.replace(regex, "\"");
 }
@@ -28,7 +28,7 @@ exports.jp1 = function(params) {
     }
     let parsed = params.out.type === "stdout" && JSONC.parse(json) || util.format("%O", JSONC.parse(json));
     // Replace single quotes with double quotes.
-    parsed = changeSingleToDoubleQuotes(parsed);
+    parsed = params.out.quotes === "double" && useDoubleQuotes(parsed) || parsed;
     if (params.out.type === "--output") {
         fs.writeFileSync(params.out.output, parsed, encoding); // File
     } else {
@@ -39,11 +39,12 @@ exports.jp1 = function(params) {
 /*
  * Called when being piped.
  */
-exports.jp2 = function() {
+exports.jp2 = function(options) {
     function parse(json) {
         const result = JSONC.parse(json);
-        const formatatted = changeSingleToDoubleQuotes(util.format("%O", result));
-        log(formatatted);
+        let formatted = util.format("%O", result);
+        formatted = options.includes("-d") && useDoubleQuotes(formatted) || formatted;
+        log(formatted);
     }
     function getInput() {
         return new Promise(function(resolve, reject) {
