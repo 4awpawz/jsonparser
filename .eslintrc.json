@@ -1,0 +1,23 @@
+{
+    "env": {
+        "browser": false,
+        "node": true,
+        "commonjs": true,
+        "es2021": true,
+        "jest": true
+    },
+    "extends": [ "eslint:recommended" ],
+    "rules": {
+        "quotes": [2, "double"],
+        "no-unused-expressions": 0,
+        "comma-dangle": [2, "always-multiline"],
+        "semi": [2, "always"],
+        "indent": [2, 4],
+        "arrow-parens": [2, "as-needed"],
+        "eol-last": 0,
+        "no-multiple-empty-lines": [2, { "max": 1, "maxBOF": 0, "maxEOF": 0 }],
+        "strict": [2, "global"],
+        "no-prototype-builtins": 0,
+        "no-unused-vars": 2
+    }
+}
